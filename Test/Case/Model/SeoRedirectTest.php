@@ -7,7 +7,10 @@ App::uses('CakeEmail', 'Network/Email');
 if (!class_exists('MockCakeEmail')) {
     class MockCakeEmail extends CakeEmail
     {
-        public function getTypes()
+        /**
+         * @return array<string>
+         */
+        public function getTypes(): array
         {
             return $this->_getTypes();
         }

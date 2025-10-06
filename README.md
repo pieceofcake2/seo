@@ -44,8 +44,8 @@ cake schema create --plugin Seo
 Create the file `app/Config/seo.php` with the following configurations like so:
 
 ```php
-$config = array(
-    'Seo' => array(
+$config = [
+    'Seo' => [
         'approverEmail' => 'nick@example.com',
         'replyEmail' => 'noreply@example.com',
         'emailConfig' => 'default', //config of your email, if false will use default CakeEmail()
@@ -53,45 +53,45 @@ $config = array(
         'aggressive' => true, //if false, log affenders for later review instead of autobanning
         'triggerCount' => 2,
         'timeBetweenTriggers' => 60 * 60 * 24, //seconds
-        'honeyPot' => array('admin' => false, 'plugin' => 'seo', 'controller' => 'seo_blacklists', 'action' => 'honeypot'),
+        'honeyPot' => ['admin' => false, 'plugin' => 'seo', 'controller' => 'seo_blacklists', 'action' => 'honeypot'],
         'log' => true,
         'cacheEngine' => false, // optionally cache things to save on DB requests - eg: 'default'
         'searchTerms' => true, //turn on term finding
-        'levenshtein' => array(
+        'levenshtein' => [
             'active' => false,
             'threshold' => 5, //-1 to ALWAYS find the closest match
             'cost_add' => 1, //cost to add a character, higher the amount the less you can add to find a match
             'cost_change' => 1, //cost to change a character, higher the amount the less you can change to find a match
             'cost_delete' => 1, //cost to delete a character, higher the ammount the less you can delete to find a match
-            'source' => '/sitemap.xml' //URL to list of urls in a sitemap
-        ),
-        'abTesting' => array(
+            'source' => '/sitemap.xml', //URL to list of urls in a sitemap
+        ],
+        'abTesting' => [
             'category' => 'ABTest', //Category for your ABTesting in Google Analytics
             'scope' => 3, //Scope for your ABTesting in Google Analytics
             'slot' => 4, //Slot for your ABTesting in Google Analytics
             'legacy' => false, //Uses Legacy verion of Google Analytics JS code pageTracker._setCustomVar(...)
             'session' => true, //will use sessions to store tests for users who've already seen them.
             'redmine' => false, //or the full URL if your redmine http://www.redmine-example.com/issues/
-        )
-    )
-);
+        ],
+    ],
+];
 ```
 
 ## SEO Redirect/Status Code Quick Start
 update file `app/Config/core.php` with the following:
 
 ```php
-Configure::write('Exception', array(
+Configure::write('Exception', [
     'handler' => 'SeoExceptionHandler::handle',
     'renderer' => 'ExceptionRenderer',
-    'log' => true
-));
+    'log' => true,
+]);
 ```
 
 update file `app/Config/bootstrap.php` with the following:
 
 ```php
-require_once(APP . 'Plugin' . DS . 'Seo' . DS . 'Lib' . DS . 'Error' . DS . 'SeoAppError.php');
+require_once APP . 'Plugin' . DS . 'Seo' . DS . 'Lib' . DS . 'Error' . DS . 'SeoAppError.php';
 ```
 
 ### Add Redirects
@@ -110,7 +110,7 @@ NOTE: Special case Status Code 200 will return minimum bandwidth noindex robots 
 Include the `Seo.Seo` Helper to your `AppController.php`:
 
 ```php
-var $helpers = array('Seo.Seo');
+public $helpers = ['Seo.Seo'];
 ```
 
 Alter your layout to include the Seo Meta Tags in the head of your layout
@@ -132,7 +132,7 @@ Alter your layout to include the Seo Meta Tags in the head of your layout
 Include the `Seo.Seo` Helper to your `AppController.php`:
 
 ```php
-var $helpers = array('Seo.Seo');
+public $helpers = ['Seo.Seo'];
 ```
 
 Alter your layout to include the Seo Title in the head of your layout
@@ -154,7 +154,7 @@ Alter your layout to include the Seo Title in the head of your layout
 Include the `Seo.Seo` Helper to your `AppController.php`:
 
 ```php
-var $helpers = array('Seo.Seo');
+public $helpers = ['Seo.Seo'];
 ```
 
 Alter your layout to include the Seo Canonical in the head of your layout
@@ -175,7 +175,7 @@ Alter your layout to include the Seo Canonical in the head of your layout
 Include The `Seo.BlackList` Component in your `AppController.php`:
 
 ```php
-var $components = array('Seo.BlackList');
+public $components = ['Seo.BlackList'];
 ```
 
 Start adding honeypot links in and around your application to bait malicious content grabbers
@@ -201,8 +201,8 @@ Disallow: /seo/
 Include the `Seo.Seo` Helper and the `Seo.ABTest` Component to your `AppController.php`:
 
 ```php
-var $helpers = array('Seo.Seo');
-var $components = array('Seo.ABTest');
+public $helpers = ['Seo.Seo'];
+public $components = ['Seo.ABTest'];
 ```
 
 In your GA code on your site add the line like so:
@@ -231,7 +231,7 @@ public function beforeFilter(){
 ProTip: For debuging in your controller before going live in GA set the debug flag to true, this will return tests that aren't active yet.
 
 ```php
-$test = $this->SeoABTest->getTest(array('debug' => true));
+$test = $this->SeoABTest->getTest(['debug' => true]);
 ```
 
 ### Add AB Tests
