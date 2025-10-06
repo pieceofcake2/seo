@@ -11,7 +11,7 @@ class TestController extends Controller
     public $redirectCalled = false;
     public $redirectArgs = [];
 
-    public function redirect($url, $status = null, $exit = true)
+    public function redirect($url, $status = null, $exit = true): null
     {
         $this->redirectCalled = true;
         $this->redirectArgs = [$url, $status, $exit];
