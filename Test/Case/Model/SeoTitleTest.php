@@ -1,25 +1,27 @@
 <?php
-/* SeoTitle Test cases generated on: 2011-01-05 18:01:14 : 1294276514*/
-App::import('Model', 'Seo.SeoTitle');
 
-class SeoTitleTest extends CakeTestCase {
-	var $fixtures = array(
-		'plugin.seo.seo_title',
-		'plugin.seo.seo_redirect',
-		'plugin.seo.seo_uri',
-		'plugin.seo.seo_meta_tag',
-		'plugin.seo.seo_status_code',
-		'plugin.seo.seo_canonical',
-	);
+App::uses('SeoAppModel', 'Seo.Model');
+App::uses('SeoTitle', 'Seo.Model');
 
-	function startTest() {
-		$this->SeoTitle = ClassRegistry::init('SeoTitle');
-	}
+class SeoTitleTest extends CakeTestCase
+{
+    public $fixtures = [
+        'plugin.seo.seo_title',
+        'plugin.seo.seo_redirect',
+        'plugin.seo.seo_uri',
+        'plugin.seo.seo_meta_tag',
+        'plugin.seo.seo_status_code',
+        'plugin.seo.seo_canonical',
+    ];
 
-	function endTest() {
-		unset($this->SeoTitle);
-		ClassRegistry::flush();
-	}
+    public function startTest($method): void
+    {
+        $this->SeoTitle = ClassRegistry::init('Seo.SeoTitle');
+    }
 
+    public function endTest($method): void
+    {
+        unset($this->SeoTitle);
+        ClassRegistry::flush();
+    }
 }
-?>

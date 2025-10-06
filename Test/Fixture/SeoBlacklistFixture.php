@@ -1,127 +1,39 @@
 <?php
-/**
- * SeoBlacklistFixture
- *
- */
-class SeoBlacklistFixture extends CakeTestFixture {
 
-/**
- * Fields
- *
- * @var array
- */
-	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-		'ip_range_start' => array('type' => 'biginteger', 'null' => false, 'default' => null, 'key' => 'index'),
-		'ip_range_end' => array('type' => 'biginteger', 'null' => false, 'default' => null, 'key' => 'index'),
-		'note' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
-		'is_active' => array('type' => 'boolean', 'null' => false, 'default' => '1'),
-		'indexes' => array(
-			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'ip_range_start' => array('column' => 'ip_range_start', 'unique' => 0),
-			'ip_range_end' => array('column' => 'ip_range_end', 'unique' => 0)
-		),
-		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
-	);
+class SeoBlacklistFixture extends CakeTestFixture
+{
+    public $name = 'SeoBlacklist';
 
-/**
- * Records
- *
- * @var array
- */
-	public $records = array(
-		array(
-			'id' => 1,
-			'ip_range_start' => '',
-			'ip_range_end' => '',
-			'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'created' => '2013-04-19 11:42:05',
-			'modified' => '2013-04-19 11:42:05',
-			'is_active' => 1
-		),
-		array(
-			'id' => 2,
-			'ip_range_start' => '',
-			'ip_range_end' => '',
-			'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'created' => '2013-04-19 11:42:05',
-			'modified' => '2013-04-19 11:42:05',
-			'is_active' => 1
-		),
-		array(
-			'id' => 3,
-			'ip_range_start' => '',
-			'ip_range_end' => '',
-			'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'created' => '2013-04-19 11:42:05',
-			'modified' => '2013-04-19 11:42:05',
-			'is_active' => 1
-		),
-		array(
-			'id' => 4,
-			'ip_range_start' => '',
-			'ip_range_end' => '',
-			'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'created' => '2013-04-19 11:42:05',
-			'modified' => '2013-04-19 11:42:05',
-			'is_active' => 1
-		),
-		array(
-			'id' => 5,
-			'ip_range_start' => '',
-			'ip_range_end' => '',
-			'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'created' => '2013-04-19 11:42:05',
-			'modified' => '2013-04-19 11:42:05',
-			'is_active' => 1
-		),
-		array(
-			'id' => 6,
-			'ip_range_start' => '',
-			'ip_range_end' => '',
-			'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'created' => '2013-04-19 11:42:05',
-			'modified' => '2013-04-19 11:42:05',
-			'is_active' => 1
-		),
-		array(
-			'id' => 7,
-			'ip_range_start' => '',
-			'ip_range_end' => '',
-			'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'created' => '2013-04-19 11:42:05',
-			'modified' => '2013-04-19 11:42:05',
-			'is_active' => 1
-		),
-		array(
-			'id' => 8,
-			'ip_range_start' => '',
-			'ip_range_end' => '',
-			'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'created' => '2013-04-19 11:42:05',
-			'modified' => '2013-04-19 11:42:05',
-			'is_active' => 1
-		),
-		array(
-			'id' => 9,
-			'ip_range_start' => '',
-			'ip_range_end' => '',
-			'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'created' => '2013-04-19 11:42:05',
-			'modified' => '2013-04-19 11:42:05',
-			'is_active' => 1
-		),
-		array(
-			'id' => 10,
-			'ip_range_start' => '',
-			'ip_range_end' => '',
-			'note' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'created' => '2013-04-19 11:42:05',
-			'modified' => '2013-04-19 11:42:05',
-			'is_active' => 1
-		),
-	);
+    public $fields = [
+        'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'],
+        'ip_range_start' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'key' => 'index'],
+        'ip_range_end' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'key' => 'index'],
+        'note' => ['type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'],
+        'is_active' => ['type' => 'boolean', 'null' => false, 'default' => '1'],
+        'created' => ['type' => 'datetime', 'null' => true, 'default' => null],
+        'modified' => ['type' => 'datetime', 'null' => true, 'default' => null],
+        'indexes' => ['PRIMARY' => ['column' => 'id', 'unique' => 1], 'ip_range_start' => ['column' => 'ip_range_start', 'unique' => 0], 'ip_range_end' => ['column' => 'ip_range_end', 'unique' => 0]],
+        'tableParameters' => ['charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM'],
+    ];
 
+    public $records = [
+        [
+            'id' => 1,
+            'ip_range_start' => 2147483000,
+            'ip_range_end' => 2147483002,
+            'note' => 'This is a note',
+            'is_active' => 1,
+            'created' => '2011-02-02 11:19:31',
+            'modified' => '2011-02-02 11:19:31',
+        ],
+        [
+            'id' => 2,
+            'ip_range_start' => 2147483100,
+            'ip_range_end' => 2147483100,
+            'note' => 'This is a note',
+            'is_active' => 0, //not active
+            'created' => '2011-02-02 11:19:31',
+            'modified' => '2011-02-02 11:19:31',
+        ],
+    ];
 }

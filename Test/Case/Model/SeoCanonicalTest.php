@@ -1,25 +1,50 @@
 <?php
-/* SeoCanonical Test cases generated on: 2011-07-27 11:26:15 : 1311787575*/
-App::import('Model', 'seo.SeoCanonical');
-App::import('Component', 'Email');
-Mock::generate('EmailComponent');
-class SeoCanonicalTest extends CakeTestCase {
-	/*var $fixtures = array(
-		'plugin.seo.seo_meta_tag',
-		'plugin.seo.seo_redirect',
-		'plugin.seo.seo_uri',
-		'plugin.seo.seo_title',
-		'plugin.seo.seo_status_code',
-		'plugin.seo.seo_canonical',
-	);*/
-	function startTest() {
-		$this->SeoCanonical = ClassRegistry::init('SeoCanonical');
-		$this->SeoRedirect->SeoUri->Email = new MockEmailComponent();
-	}
 
-	function endTest() {
-		unset($this->SeoCanonical);
-		ClassRegistry::flush();
-	}
+App::uses('SeoAppModel', 'Seo.Model');
+App::uses('SeoCanonical', 'Seo.Model');
+App::uses('CakeEmail', 'Network/Email');
 
+if (!class_exists('MockCakeEmail')) {
+    class MockCakeEmail extends CakeEmail
+    {
+        public function getTypes()
+        {
+            return $this->_getTypes();
+        }
+    }
+}
+
+class SeoCanonicalTest extends CakeTestCase
+{
+    /*var $fixtures = array(
+        'plugin.seo.seo_meta_tag',
+        'plugin.seo.seo_redirect',
+        'plugin.seo.seo_uri',
+        'plugin.seo.seo_title',
+        'plugin.seo.seo_status_code',
+        'plugin.seo.seo_canonical',
+    );*/
+
+    /**
+     * @param mixed $method
+     * @return void
+     */
+    public function startTest($method): void
+    {
+        $this->SeoCanonical = ClassRegistry::init('Seo.SeoCanonical');
+        $seoUri = $this->SeoCanonical->SeoUri;
+        $seoUri->Email = $this->getMockBuilder(MockCakeEmail::class)
+            ->onlyMethods(['send'])
+            ->getMock();
+    }
+
+    /**
+     * @param mixed $method
+     * @return void
+     */
+    public function endTest($method): void
+    {
+        unset($this->SeoCanonical);
+        ClassRegistry::flush();
+    }
 }

@@ -1,74 +1,97 @@
 <?php
-/* SeoRedirect Test cases generated on: 2010-10-05 18:10:19 : 1286323699*/
-App::import('Model', 'Seo.SeoRedirect');
-App::import('Component', 'Email');
-Mock::generate('EmailComponent');
 
-class SeoRedirectTest extends CakeTestCase {
-	var $fixtures = array(
-		'plugin.seo.seo_redirect',
-		'plugin.seo.seo_uri',
-		'plugin.seo.seo_meta_tag',
-		'plugin.seo.seo_title',
-		'plugin.seo.seo_status_code',
-		'plugin.seo.seo_canonical',
-	);
+App::uses('SeoAppModel', 'Seo.Model');
+App::uses('SeoRedirect', 'Seo.Model');
+App::uses('CakeEmail', 'Network/Email');
 
-	function startTest() {
-		$this->SeoRedirect = ClassRegistry::init('Seo.SeoRedirect');
-		$this->SeoRedirect->SeoUri->Email = new MockEmailComponent();
-	}
-	
-	function testIsRegEx(){
-	  $this->assertTrue($this->SeoRedirect->isRegEx('#(.*)\?from\=sb\-tracked\:(.*)#i'));
-	  $this->assertTrue($this->SeoRedirect->isRegEx('#(.*)#'));
-	  $this->assertFalse($this->SeoRedirect->isRegEx('/blah'));
-	  $this->assertFalse($this->SeoRedirect->isRegEx('/blah#anchor'));
-	}
-	
-	function testBeforeSaveShouldSetApproved(){
-	  $this->SeoRedirect->data = array(
-	    'SeoRedirect' => array(
-	      'redirect' => '/',
-	      'priority' => '5',
-	      'is_active' => 1,
-	    ),
-	    'SeoUri' => array(
-	    	'uri' => '/newuri'
-	    )
-	  );
-	  $this->assertTrue($this->SeoRedirect->saveAll());
-	  $result = $this->SeoRedirect->find('last');
-	  $this->assertTrue($result['SeoUri']['is_approved']);
-	  $this->SeoRedirect->SeoUri->Email->expectNever('send');
-	}
-	
-	function testBeforeSaveShouldNotSetApprovedOnRegEx(){
-	  $this->SeoRedirect->data = array(
-	    'SeoRedirect' => array(
-	      'redirect' => '/',
-	      'priority' => '5',
-	      'is_active' => 1,
-	    ),
-	    'SeoUri' => array(
-	    	'uri' => '#(somenewregex)#i',
-	    )
-	  );
-	  $this->assertTrue($this->SeoRedirect->saveAll());
-	  $result = $this->SeoRedirect->find('last');
-	  $this->assertFalse($result['SeoUri']['is_approved']);
-	  $this->SeoRedirect->SeoUri->Email->expectOnce('send');
-	}
-	
-	function testFindRedirectListByPriority(){
-	  $results = $this->SeoRedirect->findRedirectListByPriority();
-	  $this->assertEqual(6, count($results));
-	}
-
-	function endTest() {
-		unset($this->SeoRedirect);
-		ClassRegistry::flush();
-	}
-
+if (!class_exists('MockCakeEmail')) {
+    class MockCakeEmail extends CakeEmail
+    {
+        public function getTypes()
+        {
+            return $this->_getTypes();
+        }
+    }
 }
-?>
+
+/**
+ * @params SeoRedirect $SeoRedirect
+ */
+class SeoRedirectTest extends CakeTestCase
+{
+    public $fixtures = [
+        'plugin.seo.seo_redirect',
+        'plugin.seo.seo_uri',
+        'plugin.seo.seo_meta_tag',
+        'plugin.seo.seo_title',
+        'plugin.seo.seo_status_code',
+        'plugin.seo.seo_canonical',
+    ];
+
+    public function startTest($method): void
+    {
+        $this->SeoRedirect = ClassRegistry::init('Seo.SeoRedirect');
+        $seoUri = $this->SeoRedirect->SeoUri;
+        $seoUri->Email = $this->getMockBuilder(MockCakeEmail::class)
+            ->onlyMethods(['send'])
+            ->getMock();
+    }
+
+    public function endTest($method): void
+    {
+        unset($this->SeoRedirect);
+        ClassRegistry::flush();
+    }
+
+    public function testIsRegEx(): void
+    {
+        $this->assertTrue($this->SeoRedirect->isRegEx('#(.*)\?from\=sb\-tracked\:(.*)#i'));
+        $this->assertTrue($this->SeoRedirect->isRegEx('#(.*)#'));
+        $this->assertFalse($this->SeoRedirect->isRegEx('/blah'));
+        $this->assertFalse($this->SeoRedirect->isRegEx('/blah#anchor'));
+    }
+
+    public function testBeforeSaveShouldSetApproved(): void
+    {
+        $this->SeoRedirect->SeoUri->Email->expects($this->never())->method('send');
+
+        $this->SeoRedirect->data = [
+            'SeoRedirect' => [
+              'redirect' => '/',
+              'priority' => '5',
+              'is_active' => 1,
+            ],
+            'SeoUri' => [
+                'uri' => '/newuri',
+            ],
+        ];
+        $this->assertTrue($this->SeoRedirect->saveAll());
+        $result = $this->SeoRedirect->find('last');
+        $this->assertTrue($result['SeoUri']['is_approved']);
+    }
+
+    public function testBeforeSaveShouldNotSetApprovedOnRegEx(): void
+    {
+        $this->SeoRedirect->SeoUri->Email->expects($this->once())->method('send');
+
+        $this->SeoRedirect->data = [
+            'SeoRedirect' => [
+              'redirect' => '/',
+              'priority' => '5',
+              'is_active' => 1,
+            ],
+            'SeoUri' => [
+                'uri' => '#(somenewregex)#i',
+            ],
+        ];
+        $this->assertTrue($this->SeoRedirect->saveAll());
+        $result = $this->SeoRedirect->find('last');
+        $this->assertFalse($result['SeoUri']['is_approved']);
+    }
+
+    public function testFindRedirectListByPriority(): void
+    {
+        $results = $this->SeoRedirect->findRedirectListByPriority();
+        $this->assertEquals(6, count($results));
+    }
+}
