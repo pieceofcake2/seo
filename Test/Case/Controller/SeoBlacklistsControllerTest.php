@@ -6,9 +6,11 @@ class TestSeoBlacklistsController extends SeoBlacklistsController
 {
     public $autoRender = false;
 
-    public function redirect($url, $status = null, $exit = true): void
+    public function redirect($url, $status = null, $exit = true): ?CakeResponse
     {
         $this->redirectUrl = $url;
+
+        return null;
     }
 }
 
