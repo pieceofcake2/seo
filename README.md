@@ -25,12 +25,23 @@ Complete tool for all your CakePHP Search Engine Optimization needs
 
 See [CHANGELOG.md](CHANGELOG.md) for version history.
 
+## Requirements
+
+* CakePHP 2.12+
+* PHP 8.0+
+
 ## Install
 
-Clone the repository into your `app/Plugin/Seo` directory:
+Install the plugin with [Composer](https://getcomposer.org/) from the directory where your project's `composer.json` is located:
 
 ```bash
 composer require pieceofcake2/seo
+```
+
+Then load the plugin in `app/Config/bootstrap.php`:
+
+```php
+CakePlugin::load('Seo');
 ```
 
 Run the schema into your database:
