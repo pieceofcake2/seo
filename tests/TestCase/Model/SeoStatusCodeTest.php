@@ -45,4 +45,12 @@ class SeoStatusCodeTest extends CakeTestCase
         unset($this->SeoStatusCode);
         ClassRegistry::flush();
     }
+
+    public function testFindCodeList(): void
+    {
+        $result = $this->SeoStatusCode->findCodeList();
+        $this->assertSame('200 : OK', $result['200']);
+        $this->assertSame('410 : Gone', $result['410']);
+        $this->assertCount(count($this->SeoStatusCode->codes), $result);
+    }
 }

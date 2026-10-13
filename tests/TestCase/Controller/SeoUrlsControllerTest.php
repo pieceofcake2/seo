@@ -1,6 +1,7 @@
 <?php
 
 App::uses('SeoUrlsController', 'Seo.Controller');
+App::uses('SeoUrl', 'Seo.Model');
 
 class TestSeoUrlsController extends SeoUrlsController
 {
@@ -16,9 +17,14 @@ class TestSeoUrlsController extends SeoUrlsController
 
 class SeoUrlsControllerTest extends CakeTestCase
 {
+    public $fixtures = [
+        'plugin.seo.seo_url',
+    ];
+
     public function startTest($method): void
     {
         $this->SeoUrls = new TestSeoUrlsController();
+        $this->SeoUrls->plugin = 'Seo';
         $this->SeoUrls->constructClasses();
     }
 
@@ -26,5 +32,16 @@ class SeoUrlsControllerTest extends CakeTestCase
     {
         unset($this->SeoUrls);
         ClassRegistry::flush();
+    }
+
+    public function testConstructClasses(): void
+    {
+        $this->assertInstanceOf('SeoUrl', $this->SeoUrls->SeoUrl);
+    }
+
+    public function testAdminDeleteWithoutId(): void
+    {
+        $this->SeoUrls->admin_delete();
+        $this->assertSame(['action' => 'index'], $this->SeoUrls->redirectUrl);
     }
 }

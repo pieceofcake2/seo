@@ -19,14 +19,14 @@ if (!class_exists('MockCakeEmail')) {
 
 class SeoCanonicalTest extends CakeTestCase
 {
-    /*var $fixtures = array(
+    public $fixtures = [
         'plugin.seo.seo_meta_tag',
         'plugin.seo.seo_redirect',
         'plugin.seo.seo_uri',
         'plugin.seo.seo_title',
         'plugin.seo.seo_status_code',
         'plugin.seo.seo_canonical',
-    );*/
+    ];
 
     /**
      * @param mixed $method
@@ -49,5 +49,11 @@ class SeoCanonicalTest extends CakeTestCase
     {
         unset($this->SeoCanonical);
         ClassRegistry::flush();
+    }
+
+    public function testFindByUri(): void
+    {
+        $this->assertSame('/new_canonical_link', $this->SeoCanonical->findByUri('/canonical'));
+        $this->assertFalse($this->SeoCanonical->findByUri('/unknown'));
     }
 }

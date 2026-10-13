@@ -38,4 +38,18 @@ class SeoABTestTest extends CakeTestCase
 
         parent::tearDown();
     }
+
+    public function testRoll(): void
+    {
+        $this->assertTrue($this->SeoABTest->roll(100));
+        $this->assertTrue($this->SeoABTest->roll(['SeoABTest' => ['roll' => '100']]));
+        $this->assertFalse($this->SeoABTest->roll(null));
+        $this->assertFalse($this->SeoABTest->roll(0));
+    }
+
+    public function testIsTestable(): void
+    {
+        $this->assertTrue($this->SeoABTest->isTestable(null));
+        $this->assertTrue($this->SeoABTest->isTestable(['SeoABTest' => ['testable' => '']]));
+    }
 }

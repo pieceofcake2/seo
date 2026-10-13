@@ -24,4 +24,13 @@ class SeoTitleTest extends CakeTestCase
         unset($this->SeoTitle);
         ClassRegistry::flush();
     }
+
+    public function testFindTitleByUri(): void
+    {
+        $result = $this->SeoTitle->findTitleByUri('/blah');
+        $this->assertSame('Title', $result['SeoTitle']['title']);
+
+        $this->assertEmpty($this->SeoTitle->findTitleByUri('/not_active'));
+        $this->assertEmpty($this->SeoTitle->findTitleByUri('/unknown'));
+    }
 }
