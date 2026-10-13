@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+- Require PHP 8.0+ and pieceofcake2/cakephp 2.12+
+- Move tests to `tests/TestCase` and fixtures to `tests/Fixture`
+- Add tests for SeoABTest, SeoCanonical, SeoStatusCode, SeoTitle, SeoBlacklistsController and SeoUrlsController
+
 ## 6.2.2
 - Updated to PHPUnit 9 compatibility
 - Converted all `App::import` to `App::uses` throughout codebase

@@ -1,7 +1,7 @@
 <?php
 
 App::uses('SeoAppModel', 'Seo.Model');
-App::uses('SeoStatusCode', 'Seo.Model');
+App::uses('SeoCanonical', 'Seo.Model');
 App::uses('CakeEmail', 'Network/Email');
 
 if (!class_exists('MockCakeEmail')) {
@@ -17,32 +17,43 @@ if (!class_exists('MockCakeEmail')) {
     }
 }
 
-/**
- * @property SeoRedirect $SeoRedirect
- */
-class SeoStatusCodeTest extends CakeTestCase
+class SeoCanonicalTest extends CakeTestCase
 {
     public $fixtures = [
+        'plugin.seo.seo_meta_tag',
         'plugin.seo.seo_redirect',
         'plugin.seo.seo_uri',
-        'plugin.seo.seo_meta_tag',
         'plugin.seo.seo_title',
         'plugin.seo.seo_status_code',
         'plugin.seo.seo_canonical',
     ];
 
+    /**
+     * @param mixed $method
+     * @return void
+     */
     public function startTest($method): void
     {
-        $this->SeoStatusCode = ClassRegistry::init('Seo.SeoStatusCode');
-        $seoUri = $this->SeoStatusCode->SeoUri;
+        $this->SeoCanonical = ClassRegistry::init('Seo.SeoCanonical');
+        $seoUri = $this->SeoCanonical->SeoUri;
         $seoUri->Email = $this->getMockBuilder(MockCakeEmail::class)
             ->onlyMethods(['send'])
             ->getMock();
     }
 
+    /**
+     * @param mixed $method
+     * @return void
+     */
     public function endTest($method): void
     {
-        unset($this->SeoStatusCode);
+        unset($this->SeoCanonical);
         ClassRegistry::flush();
+    }
+
+    public function testFindByUri(): void
+    {
+        $this->assertSame('/new_canonical_link', $this->SeoCanonical->findByUri('/canonical'));
+        $this->assertFalse($this->SeoCanonical->findByUri('/unknown'));
     }
 }

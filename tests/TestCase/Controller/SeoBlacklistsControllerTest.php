@@ -1,6 +1,7 @@
 <?php
 
 App::uses('SeoBlacklistsController', 'Seo.Controller');
+App::uses('SeoBlacklist', 'Seo.Model');
 
 class TestSeoBlacklistsController extends SeoBlacklistsController
 {
@@ -16,9 +17,14 @@ class TestSeoBlacklistsController extends SeoBlacklistsController
 
 class SeoBlacklistsControllerTest extends CakeTestCase
 {
+    public $fixtures = [
+        'plugin.seo.seo_blacklist',
+    ];
+
     public function startTest($method): void
     {
         $this->SeoBlacklists = new TestSeoBlacklistsController();
+        $this->SeoBlacklists->plugin = 'Seo';
         $this->SeoBlacklists->constructClasses();
     }
 
@@ -26,5 +32,16 @@ class SeoBlacklistsControllerTest extends CakeTestCase
     {
         unset($this->SeoBlacklists);
         ClassRegistry::flush();
+    }
+
+    public function testConstructClasses(): void
+    {
+        $this->assertInstanceOf('SeoBlacklist', $this->SeoBlacklists->SeoBlacklist);
+    }
+
+    public function testAdminDeleteWithoutId(): void
+    {
+        $this->SeoBlacklists->admin_delete();
+        $this->assertSame(['action' => 'index'], $this->SeoBlacklists->redirectUrl);
     }
 }
