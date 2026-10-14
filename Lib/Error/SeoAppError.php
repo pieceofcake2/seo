@@ -20,11 +20,16 @@ class SeoAppError
     public $SeoUri = null;
 
     /**
-     * Overload constructor so we can test it properly
+     * Controller used to send redirects and headers
      *
-     * @param bool $test
+     * @var Controller
      */
-    public function __construct($test = false)
+    public $controller;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
     {
         $this->controller = new Controller(null, new CakeResponse());
     }

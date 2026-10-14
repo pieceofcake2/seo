@@ -85,4 +85,13 @@ class SeoBlacklistTest extends CakeTestCase
         unset($_SERVER['HTTP_X_FORWARDED_FOR']);
         $this->assertEquals('remote', $this->SeoBlacklist->getIpFromServer());
     }
+
+    public function testGetIpFromServerWithoutIp(): void
+    {
+        $_SERVER['HTTP_CLIENT_IP'] = '';
+        $_SERVER['HTTP_X_FORWARDED_FOR'] = '';
+        $_SERVER['REMOTE_ADDR'] = '';
+
+        $this->assertNull($this->SeoBlacklist->getIpFromServer());
+    }
 }

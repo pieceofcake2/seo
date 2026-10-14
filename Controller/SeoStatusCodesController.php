@@ -21,7 +21,7 @@ class SeoStatusCodesController extends SeoAppController
         }
 
         $conditions = $this->SeoStatusCode->generateFilterConditions($filter);
-        $this->set('seoStatusCodes', $this->paginate($conditions));
+        $this->set('seoStatusCodes', $this->paginate(null, $conditions));
         $this->set('filter', $filter);
     }
 

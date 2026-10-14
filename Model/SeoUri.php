@@ -6,6 +6,13 @@ App::uses('CakeEmail', 'Network/Email');
 class SeoUri extends SeoAppModel
 {
     /**
+     * Email instance used to send approval notifications
+     *
+     * @var CakeEmail|null
+     */
+    public $Email = null;
+
+    /**
      * Model Name/Alias
      *
      * @var string
@@ -97,7 +104,7 @@ class SeoUri extends SeoAppModel
      * is_approved is specifically being sent in.
      *
      * @param array $options
-     * @return true
+     * @return bool
      */
     public function beforeSave($options = [])
     {
@@ -117,7 +124,8 @@ class SeoUri extends SeoAppModel
      * Send need approval email if we need it.
      *
      * @param bool $created
-     * @return bool
+     * @param array $options
+     * @return void
      */
     public function afterSave($created, $options = [])
     {
@@ -129,13 +137,13 @@ class SeoUri extends SeoAppModel
             $this->sendNotification();
         }
 
-        return parent::afterSave($created, $options);
+        parent::afterSave($created, $options);
     }
 
     /**
      * Url encode the uri
      *
-     * @param int id
+     * @param int|null $id
      * @return bool success
      */
     public function urlEncode($id = null)
@@ -154,7 +162,7 @@ class SeoUri extends SeoAppModel
     /**
      * Named scope to find for view
      *
-     * @param int id
+     * @param int $id
      * @return mixed result of find.
      */
     public function findForViewById($id)
@@ -168,7 +176,7 @@ class SeoUri extends SeoAppModel
     /**
      * Find the URI id by uri
      *
-     * @param string uri
+     * @param string|null $uri
      * @return mixed id
      */
     public function findIdByUri($uri = null)
@@ -240,7 +248,7 @@ class SeoUri extends SeoAppModel
     /**
      * Set as approved
      *
-     * @param int id of seo redirect to approve
+     * @param int|null $id id of seo redirect to approve
      * @return bool result of save
      */
     public function setApproved($id = null)
@@ -255,7 +263,7 @@ class SeoUri extends SeoAppModel
     /**
      * Send the notification of a regular expression that needs approval.
      *
-     * @param int id
+     * @param int|null $id
      * @return void
      */
     public function sendNotification($id = null)
@@ -295,8 +303,8 @@ class SeoUri extends SeoAppModel
     /**
      * Given a request, see if the uri matches.
      *
-     * @param string request
-     * @param mixed string uri or uri_id to look up
+     * @param string $request
+     * @param string|int|null $uri uri or uri_id to look up
      * @return bool if request matches the URI given
      */
     public function requestMatch($request, $uri = null)

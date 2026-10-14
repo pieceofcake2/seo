@@ -80,6 +80,9 @@ class SeoUtil extends CakeObject
         if (!isset($this->SeoBlacklist)) {
             $this->SeoBlacklist = ClassRegistry::init('Seo.SeoBlacklist');
         }
+        if (!$this->SeoBlacklist instanceof SeoBlacklist) {
+            return false;
+        }
 
         return $this->SeoBlacklist->isBanned($ip);
     }
@@ -125,8 +128,8 @@ class SeoUtil extends CakeObject
     /**
      * Given a request, see if the uri matches.
      *
-     * @param string request
-     * @param string|null uri
+     * @param string $request
+     * @param string|null $uri
      * @return bool if request matches the URI given
      */
     public static function requestMatch(string $request, ?string $uri = null): bool

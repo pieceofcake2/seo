@@ -32,7 +32,7 @@ class SeoABTestsController extends SeoAppController
             $filter = $this->data['SeoABTest']['filter'];
         }
         $conditions = $this->SeoABTest->generateFilterConditions($filter);
-        $this->set('seoABTests', $this->paginate($conditions));
+        $this->set('seoABTests', $this->paginate(null, $conditions));
         $this->set('filter', $filter);
     }
 

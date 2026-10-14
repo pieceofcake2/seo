@@ -4,7 +4,7 @@ App::uses('SeoAppController', 'Seo.Controller');
 
 /**
  * @property SeoBlacklist $SeoBlacklist
- * @property Auth $Auth
+ * @property AuthComponent $Auth
  */
 class SeoBlacklistsController extends SeoAppController
 {
@@ -43,7 +43,7 @@ class SeoBlacklistsController extends SeoAppController
         }
 
         $conditions = $this->SeoBlacklist->generateFilterConditions($filter);
-        $this->set('seoBlacklists', $this->paginate($conditions));
+        $this->set('seoBlacklists', $this->paginate(null, $conditions));
         $this->set('filter', $filter);
     }
 

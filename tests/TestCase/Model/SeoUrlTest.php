@@ -58,4 +58,16 @@ class SeoUrlTest extends CakeTestCase
         $result = $this->SeoUrl->import('/custom-sitemap.xml');
         $this->assertEquals('269', $result);
     }
+
+    public function testClear(): void
+    {
+        $this->SeoUrl->id = 1;
+        $this->SeoUrl->data = ['SeoUrl' => ['url' => '/some']];
+        $this->SeoUrl->validationErrors = ['url' => ['error']];
+
+        $this->assertTrue($this->SeoUrl->clear());
+        $this->assertFalse($this->SeoUrl->id);
+        $this->assertSame([], $this->SeoUrl->data);
+        $this->assertSame([], $this->SeoUrl->validationErrors);
+    }
 }

@@ -20,7 +20,7 @@ class SeoMetaTagsController extends SeoAppController
             $filter = $this->data['SeoMetaTag']['filter'];
         }
         $conditions = $this->SeoMetaTag->generateFilterConditions($filter);
-        $this->set('seoMetaTags', $this->paginate($conditions));
+        $this->set('seoMetaTags', $this->paginate(null, $conditions));
         $this->set('filter', $filter);
     }
 

@@ -3,6 +3,14 @@
 class SeoRedirect extends SeoAppModel
 {
     public $name = 'SeoRedirect';
+
+    /**
+     * Request passed to callbackTest(), for testing.
+     *
+     * @var mixed
+     */
+    public $uri_request = null;
+
     public $displayField = 'uri';
     public $validate = [
         'redirect' => [

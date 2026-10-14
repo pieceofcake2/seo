@@ -101,7 +101,11 @@ class SeoRedirectsShell extends Shell
             'callback' => null,
         ];
         $input = array_combine(array_keys($default), $this->args + array_fill(0, count($default), null));
-        extract(array_merge($default, Set::filter($input)));
+        $input = array_merge($default, Set::filter($input));
+        $url = $input['url'];
+        $redirect = $input['redirect'];
+        $priority = $input['priority'];
+        $callback = $input['callback'];
 
         if (empty($url) || strlen($url) < 3) {
             $this->errorAndExit("Sorry, bad/missing input <url> = '$url'");
@@ -146,7 +150,6 @@ class SeoRedirectsShell extends Shell
             $this->out("	    (active={$redirect['SeoRedirect']['is_active']}) (priority={$redirect['SeoRedirect']['priority']}) (callback={$redirect['SeoRedirect']['callback']})");
         } else {
             $this->out('Errors');
-            print_r($this->SeoUrl->errors);
             print_r($this->SeoUrl->validationErrors);
             print_r($this->SeoRedirect->validationErrors);
             $this->out();
@@ -199,7 +202,7 @@ class SeoRedirectsShell extends Shell
     /**
      * Private method to output the error and exit(1)
      *
-     * @param string message to output
+     * @param string $message message to output
      * @return never
      * @access private
      */

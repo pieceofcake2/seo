@@ -110,7 +110,7 @@ class SeoSearchTerm extends SeoAppModel
     /**
      * Itterate the count on a specific term.
      *
-     * @param int|null i$d (optional)
+     * @param string|int|null $id (optional)
      * @return bool success
      */
     public function itterateCount($id = null)

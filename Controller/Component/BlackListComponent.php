@@ -35,6 +35,13 @@ class BlackListComponent extends Component
     public $SeoHoneypotVisit = null;
 
     /**
+     * Controller this component is attached to
+     *
+     * @var Controller
+     */
+    public $Controller;
+
+    /**
      * Initialize the component, set the settings
      */
     public function initialize($controller, $settings = [])
@@ -81,7 +88,7 @@ class BlackListComponent extends Component
             if ($this->SeoHoneypotVisit->isTriggered()) {
                 $this->SeoBlacklist->addToBanned();
 
-                $this->isBanned();
+                $this->__isBanned();
             } else {
                 $this->Controller->redirect('/');
             }
@@ -91,7 +98,7 @@ class BlackListComponent extends Component
     /**
      * Load a plugin model
      *
-     * @param string|null modelname
+     * @param string|null $model model name
      * @return void
      */
     private function loadModel(?string $model = null): void

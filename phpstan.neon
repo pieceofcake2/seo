@@ -1,0 +1,19 @@
+includes:
+    - vendor/pieceofcake2/phpstan-cakephp2/extension.neon
+
+parameters:
+    level: 5
+    phpVersion: 80000
+    paths:
+        - Config
+        - Console
+        - Controller
+        - Lib
+        - Model
+        - View
+    excludePaths:
+        # Migrations need the optional CakeDC Migrations plugin (CakeMigration),
+        # which is not a dependency of this plugin.
+        - Config/Migration
+    bootstrapFiles:
+        - tests/bootstrap.php

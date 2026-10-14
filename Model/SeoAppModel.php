@@ -42,7 +42,7 @@ class SeoAppModel extends AppModel
      * standard beforeSave() callback
      * Save string IPs as longs
      *
-     * @return true
+     * @return bool
      */
     public function beforeSave($options = [])
     {
@@ -161,7 +161,7 @@ class SeoAppModel extends AppModel
     /**
      * return conditions based on searchable fields and filter
      *
-     * @param string|null filter
+     * @param string|null $filter
      * @return array conditions array
      */
     public function generateFilterConditions(?string $filter = null)
@@ -179,7 +179,7 @@ class SeoAppModel extends AppModel
     /**
      * Returns the server IP based on values from the $_SERVER, etc
      *
-     * @return string $ip of incoming/client IP
+     * @return string|null $ip of incoming/client IP
      */
     public function getIpFromServer()
     {
@@ -194,12 +194,14 @@ class SeoAppModel extends AppModel
                 return $ip;
             }
         }
+
+        return null;
     }
 
     /**
      * This is what I want create to do, but without setting defaults.
      *
-     * @return array
+     * @return bool Always true
      */
     public function clear()
     {
@@ -207,6 +209,6 @@ class SeoAppModel extends AppModel
         $this->data = [];
         $this->validationErrors = [];
 
-        return $this->data;
+        return true;
     }
 }

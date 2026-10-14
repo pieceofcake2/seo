@@ -27,8 +27,20 @@ class TestBlacklist extends CakeTestModel
     public $useDbConfig = 'test_suite';
     public $useTable = false;
 
+    public $banned = true;
+
+    public $addedToBanned = false;
+
     public function isBanned(): bool
     {
+        return $this->banned;
+    }
+
+    public function addToBanned(): bool
+    {
+        $this->addedToBanned = true;
+        $this->banned = true;
+
         return true;
     }
 }
@@ -41,6 +53,11 @@ class TestHoneyPotVisit extends CakeTestModel
     public $useTable = false;
 
     public function isTriggered(): bool
+    {
+        return true;
+    }
+
+    public function add(): bool
     {
         return true;
     }
@@ -87,5 +104,20 @@ class BlackListTest extends CakeTestCase
         $this->BlackList->Controller = $controller;
         $this->assertTrue($this->BlackList->__isBanned());
         $this->assertTrue($controller->redirectCalled);
+    }
+
+    public function testHandleIfHoneyPotTriggered(): void
+    {
+        $controller = new TestController();
+        $controller->here = '/seo/seo_blacklists/honeypot';
+        $this->BlackList->Controller = $controller;
+        $this->BlackList->honeyPot = '/seo/seo_blacklists/honeypot';
+        $this->BlackList->SeoBlacklist->banned = false;
+
+        $this->BlackList->__handleIfHoneyPot();
+
+        $this->assertTrue($this->BlackList->SeoBlacklist->addedToBanned);
+        $this->assertTrue($controller->redirectCalled);
+        $this->assertSame($this->BlackList->redirect, $controller->redirectArgs[0]);
     }
 }
