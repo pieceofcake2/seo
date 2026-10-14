@@ -1,6 +1,6 @@
 {
     "name": "pieceofcake2/seo",
-    "description": "CakePHP 2 Search Engine Optimization Plugin",
+    "description": "SEO toolkit for CakePHP 2: redirects, status codes, meta tags, titles, canonical links, scraper blacklist and A/B testing",
     "type": "cakephp-plugin",
     "keywords": ["cakephp", "cakephp2", "seo"],
     "license": "MIT",
