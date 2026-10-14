@@ -18,7 +18,7 @@ class SeoTitlesController extends SeoAppController
             $filter = $this->data['SeoTitle']['filter'];
         }
         $conditions = $this->SeoTitle->generateFilterConditions($filter);
-        $this->set('seoTitles', $this->paginate($conditions));
+        $this->set('seoTitles', $this->paginate(null, $conditions));
         $this->set('filter', $filter);
     }
 

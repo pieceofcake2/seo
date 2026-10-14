@@ -4,6 +4,12 @@
 - Require PHP 8.0+ and pieceofcake2/cakephp 2.12+
 - Move tests to `tests/TestCase` and fixtures to `tests/Fixture`
 - Add tests for SeoABTest, SeoCanonical, SeoStatusCode, SeoTitle, SeoBlacklistsController and SeoUrlsController
+- Add PHPStan analysis at level 5
+- Fix `BlackListComponent` calling the undefined `isBanned()` method when the honeypot is triggered
+- Fix `ABTestComponent::reset()` not clearing the cached test
+- Remove `SeoUrlsController::admin_approve()`, which called the undefined `SeoUrl::setApproved()` (seo_urls has no `is_approved` column)
+- Fix `SeoRedirectsShell add` printing the undefined `SeoUrl::$errors` property when saving fails
+- `SeoAppModel::clear()` now returns `true` like `Model::clear()` instead of an empty array
 
 ## 6.2.2
 - Updated to PHPUnit 9 compatibility

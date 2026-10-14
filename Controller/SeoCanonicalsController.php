@@ -21,7 +21,7 @@ class SeoCanonicalsController extends SeoAppController
             $filter = $this->data['SeoCanonical']['filter'];
         }
         $conditions = $this->SeoCanonical->generateFilterConditions($filter);
-        $this->set('seoCanonicals', $this->paginate($conditions));
+        $this->set('seoCanonicals', $this->paginate(null, $conditions));
         $this->set('filter', $filter);
     }
 

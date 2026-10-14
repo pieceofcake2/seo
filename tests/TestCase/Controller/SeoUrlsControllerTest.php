@@ -23,7 +23,7 @@ class SeoUrlsControllerTest extends CakeTestCase
 
     public function startTest($method): void
     {
-        $this->SeoUrls = new TestSeoUrlsController();
+        $this->SeoUrls = new TestSeoUrlsController(new CakeRequest('/', false), new CakeResponse());
         $this->SeoUrls->plugin = 'Seo';
         $this->SeoUrls->constructClasses();
     }
@@ -43,5 +43,21 @@ class SeoUrlsControllerTest extends CakeTestCase
     {
         $this->SeoUrls->admin_delete();
         $this->assertSame(['action' => 'index'], $this->SeoUrls->redirectUrl);
+    }
+
+    public function testAdminView(): void
+    {
+        $this->SeoUrls->admin_view(3);
+
+        $this->assertSame('/some', $this->SeoUrls->viewVars['seoUri']['SeoUrl']['url']);
+        $this->assertSame(3, $this->SeoUrls->viewVars['id']);
+    }
+
+    public function testAdminEditLoadsRecord(): void
+    {
+        $this->SeoUrls->admin_edit(3);
+
+        $this->assertSame('/some', $this->SeoUrls->request->data['SeoUrl']['url']);
+        $this->assertSame(3, $this->SeoUrls->viewVars['id']);
     }
 }

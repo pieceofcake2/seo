@@ -56,7 +56,7 @@ class SeoCanonical extends SeoAppModel
     /**
      * Find the first canonical link that matches this requesting URI
      *
-     * @param string|null incoming reuqest uri
+     * @param string|null $request incoming request uri
      * @return mixed the first canonical link to match
      */
     public function findByUri(?string $request = null)

@@ -192,7 +192,7 @@ class SeoABTest extends SeoAppModel
     /**
      * Rolls the test roll.
      *
-     * @param mixed string roll, int roll, or array test
+     * @param array|string|int|null $roll string roll, int roll, or array test
      * @return bool success
      */
     public function roll($roll = null): bool
@@ -216,7 +216,7 @@ class SeoABTest extends SeoAppModel
     /**
      * Take in a test and decide if it's testable.
      *
-     * @param mixed string testable or array of test
+     * @param array|string|null $testable string testable or array of test
      * @return bool isTestable
      */
     public function isTestable($testable = null): bool
@@ -238,8 +238,8 @@ class SeoABTest extends SeoAppModel
     /**
      * Find a test and roll to use it.
      *
-     * @param string|null request (default to env('REQUEST_URI') if left null)
-     * @param bool|null debug, will return tests even if they're not active if true
+     * @param string|null $request request (default to env('REQUEST_URI') if left null)
+     * @param bool|null $debug will return tests even if they're not active if true
      * @return bool test if we find a test and rolled successful, or false
      */
     public function findTestableWithRoll(?string $request = null, ?bool $debug = false): bool
@@ -255,8 +255,8 @@ class SeoABTest extends SeoAppModel
     /**
      * Decide if we have a test for this request
      *
-     * @param string|null request (optional will default to REQUEST_URI
-     * @param bool|null debug (default false), if true, will also return non active tests based on the request
+     * @param string|null $request request (optional will default to REQUEST_URI)
+     * @param bool|null $debug (default false), if true, will also return non active tests based on the request
      * @return mixed boolean false if no test, otherwise the ABTest will be returned
      */
     public function findTestByUri(?string $request = null, ?bool $debug = false)

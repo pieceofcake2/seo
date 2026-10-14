@@ -10,18 +10,25 @@ class ABTestComponent extends Component
     public $test = null;
 
     /**
+     * Placeholder for the SeoABTest Model
+     *
+     * @var SeoABTest|null
+     */
+    public $SeoABTest = null;
+
+    /**
      * Reset the component
      */
     public function reset()
     {
-        $this->ABTest = null;
+        $this->test = null;
         CakeSession::delete('Seo.ABTests');
     }
 
     /**
      * Find, setup, and get the AB test, if we're using Sessions setup in the config, look at that first.
      *
-     * @param array of options
+     * @param array $options options
      * - debug (if true, will always return the test even if it's not active, and regardless of roll)
      * - return (test|roll|both) default test.
      * - refresh (will preform the search as normal without the cached test result) default false
@@ -82,7 +89,7 @@ class ABTestComponent extends Component
     /**
      * Load a plugin model
      *
-     * @param string modelname
+     * @param string|null $model model name
      * @return void
      */
     private function loadModel($model = null)

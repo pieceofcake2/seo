@@ -19,7 +19,7 @@ class SeoUrlsController extends SeoAppController
             $filter = $this->data['SeoUrl']['filter'];
         }
         $conditions = $this->SeoUrl->generateFilterConditions($filter);
-        $this->set('seoUrls', $this->paginate($conditions));
+        $this->set('seoUrls', $this->paginate(null, $conditions));
         $this->set('filter', $filter);
     }
 
@@ -34,7 +34,9 @@ class SeoUrlsController extends SeoAppController
 
             return $this->redirect(['action' => 'index']);
         }
-        $this->set('seoUri', $this->SeoUrl->findById($id));
+        $this->set('seoUri', $this->SeoUrl->find('first', [
+            'conditions' => ["{$this->SeoUrl->alias}.id" => $id],
+        ]));
         $this->set('id', $id);
     }
 
@@ -80,7 +82,9 @@ class SeoUrlsController extends SeoAppController
         }
 
         if (empty($this->data)) {
-            $this->data = $this->SeoUrl->findById($id);
+            $this->data = $this->SeoUrl->find('first', [
+                'conditions' => ["{$this->SeoUrl->alias}.id" => $id],
+            ]);
         }
 
         $this->set('id', $id);
@@ -110,20 +114,5 @@ class SeoUrlsController extends SeoAppController
         $this->Session->setFlash(__('Seo url was not deleted'), $badFlash);
 
         return $this->redirect(['action' => 'index']);
-    }
-
-    /**
-     * @param ?int $id
-     * @return CakeResponse|null
-     */
-    public function admin_approve(?int $id = null)
-    {
-        if (!$id) {
-            $this->Session->setFlash(__('Invalid id for seo url'));
-        } elseif ($this->SeoUrl->setApproved($id)) {
-            $this->Session->setFlash(__('Seo Uri approved'));
-        }
-
-        return $this->redirect(['admin' => true, 'action' => 'index']);
     }
 }

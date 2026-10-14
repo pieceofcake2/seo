@@ -12,6 +12,9 @@ App::uses('SeoUtil', 'Seo.Lib');
 App::uses('SeoUri', 'Seo.Model');
 App::uses('AppHelper', 'View/Helper');
 
+/**
+ * @property HtmlHelper $Html
+ */
 class SeoHelper extends AppHelper
 {
     public $helpers = ['Html'];
@@ -24,8 +27,8 @@ class SeoHelper extends AppHelper
     /**
      * Show the meta tags designated for this uri
      *
-     * @param array of name => content meta tags to merge with giving priority to SEO meta tags
-     * @return string of meta tags to show.
+     * @param array $metaData name => content meta tags to merge with giving priority to SEO meta tags
+     * @return string meta tags to show.
      */
     public function metaTags($metaData = [])
     {
@@ -60,8 +63,8 @@ class SeoHelper extends AppHelper
     /**
      * Pull in the DNS prefetches if we have any
      *
-     * @param array of dns urls to tell the browser to prefetch (default in config)
-     * @return html|null tags with dns-prefetch
+     * @param array|string $prefetches dns urls to tell the browser to prefetch (default in config)
+     * @return string|null tags with dns-prefetch
      */
     public function dnsPrefetch($prefetches = [])
     {
@@ -85,10 +88,10 @@ class SeoHelper extends AppHelper
      * Return a canonical link tag for SEO purpolses
      * Utility method
      *
-     * @param router friendly URL
-     * @param boolean full url or relative (default true)
-     * @param boolean overwrite (will always check SeoCanonical first)
-     * @return HTMlElement of canonical link or empty string if none found/used
+     * @param array|string|null $url router friendly URL
+     * @param bool $full full url or relative (default true)
+     * @param bool $overwrite overwrite (will always check SeoCanonical first)
+     * @return string canonical link or empty string if none found/used
      */
     public function canonical($url = null, $full = true, $overwrite = false)
     {
@@ -114,9 +117,9 @@ class SeoHelper extends AppHelper
      * Show a honeypot link
      * to bait scrappers to click on for autobanning
      *
-     * @param string title for link
-     * @param array of options
-     * @return HtmlLink to honeypot action
+     * @param string $title title for link
+     * @param array $options options
+     * @return string link to honeypot action
      */
     public function honeyPot($title = 'Click Here', $options = [])
     {
@@ -145,7 +148,7 @@ class SeoHelper extends AppHelper
     /**
      * Find the title tag related to this request and output the result.
      *
-     * @param string default title tag
+     * @param string $default default title tag
      * @return string title for requested uri
      */
     public function title($default = '')
@@ -161,7 +164,7 @@ class SeoHelper extends AppHelper
     /**
      * Load a plugin model
      *
-     * @param string modelname
+     * @param string|null $model model name
      * @return void
      */
     public function loadModel($model = null)
@@ -231,7 +234,7 @@ class SeoHelper extends AppHelper
      * (custom functionality you may not need)
      *
      * @param mixed $ticket_id (string or int)
-     * @return string $html
+     * @return string|null $html
      */
     public function redmineLink($ticket_id = null)
     {

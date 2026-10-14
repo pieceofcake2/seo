@@ -41,7 +41,7 @@ class SeoUrl extends SeoAppModel
      * @param string|null $sitemap path to sitemap we want to parse
      * @param bool $clear_all clear the set first, then import.
      * @param bool $verbose verbose
-     * @param int count of imported urls
+     * @return int count of imported urls
      */
     public function import(?string $sitemap = null, bool $clear_all = true, bool $verbose = false): int
     {

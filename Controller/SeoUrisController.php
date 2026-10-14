@@ -40,7 +40,7 @@ class SeoUrisController extends SeoAppController
         }
 
         $conditions = $this->SeoUri->generateFilterConditions($filter);
-        $this->set('seoUris', $this->paginate($conditions));
+        $this->set('seoUris', $this->paginate(null, $conditions));
         $this->set('filter', $filter);
     }
 

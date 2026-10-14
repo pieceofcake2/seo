@@ -17,7 +17,7 @@ class SeoRedirectsController extends SeoAppController
             $filter = $this->data['SeoRedirect']['filter'];
         }
         $conditions = $this->SeoRedirect->generateFilterConditions($filter);
-        $this->set('seoRedirects', $this->paginate($conditions));
+        $this->set('seoRedirects', $this->paginate(null, $conditions));
         $this->set('filter', $filter);
     }
 
