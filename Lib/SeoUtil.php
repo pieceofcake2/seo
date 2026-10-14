@@ -5,7 +5,7 @@
  * @author Nick Baker
  * @since 2.0
  * @license MIT
- * @property SeoBlacklist $SeoBlacklist
+ * @property SeoBlacklist|false $SeoBlacklist
  */
 class SeoUtil extends CakeObject
 {
