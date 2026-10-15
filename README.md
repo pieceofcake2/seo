@@ -48,7 +48,9 @@ This package is a maintained fork of
 (`webtechnick/cakephp-seo-plugin` on Packagist, last upstream version v6.1.0), originally by Nick
 Baker, Alan Blount and Matt Reishus. It is maintained for CakePHP 2 on modern PHP by
 [pieceofcake2](https://github.com/pieceofcake2). Changes from the original are listed in
-[CHANGELOG.md](https://github.com/pieceofcake2/seo/blob/6.x/CHANGELOG.md).
+[CHANGELOG.md](https://github.com/pieceofcake2/seo/blob/6.x/CHANGELOG.md). The
+documentation includes the pages of the original plugin's
+[wiki](https://github.com/webtechnick/CakePHP-Seo-Plugin/wiki).
 
 ## License
 
