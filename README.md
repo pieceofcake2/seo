@@ -16,6 +16,13 @@ by Nick Baker.
 
 See [CHANGELOG.md](CHANGELOG.md) for the version history.
 
+## Documentation
+
+- Website: https://pieceofcake2.github.io/seo/
+- Markdown: [docs/README.md](docs/README.md) (for AI tools and offline reading)
+
+The Markdown documentation is also included in the Composer package, in the plugin's directory: `plugins/Seo/docs/README.md` (the location depends on your `installer-paths`). Install the package with `--dev` if you only need it for development.
+
 ## Requirements
 
 * PHP 8.0+
@@ -29,10 +36,6 @@ composer require pieceofcake2/seo
 
 Then load the plugin, create its tables and configure it.
 See [Installation](docs/README.md#installation) and [Configuration](docs/README.md#configuration).
-
-## Documentation
-
-Documentation: https://pieceofcake2.github.io/seo/
 
 ## Contributing
 
