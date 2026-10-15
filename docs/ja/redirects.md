@@ -98,7 +98,7 @@ URI はリクエストの `REQUEST_URI` と比較されるので、クエリ文�
 
 ## リダイレクトの種類
 
-リダイレクトには、基本と高度の 2 種類があります。
+リダイレクトには、基本的なリダイレクトと高度なリダイレクトの 2 種類があります。
 
 <a id="basic-redirects"></a>
 
@@ -277,7 +277,7 @@ bin/cake Seo.seo_urls add <url> <priority>
 
 ## 参考資料
 
-正規表現についてさらに学ぶには:
+正規表現について詳しくは、次の資料をご覧ください。
 
 - [Regular Expressions Tutorial](https://www.regular-expressions.info/tutorial.html)
 - [Regular Expressions - User Guide](https://www.zytrax.com/tech/web/regex.htm)

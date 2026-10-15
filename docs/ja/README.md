@@ -9,7 +9,7 @@ pieceofcake2/seo は、CakePHP 2 アプリケーションの検索エンジン�
 * URI に応じた [タイトルタグ](titles.md) の上書き
 * URI に応じた [canonical リンク](#canonical-links)
 * URI に応じた独自の [ステータスコード](redirects.md#add-status-codes)
-* スクレイパーが自分自身を禁止させるハニーポットを備えた [スクレイパー禁止](#blacklist) の管理
+* スクレイパーが自ら禁止対象になるように誘い込むハニーポットまで備えた [スクレイパー禁止](#blacklist) の管理
 * URI に応じた Google Analytics の [A/B テスト](#ab-testing) の管理
 
 バージョン履歴は [CHANGELOG.md](../../CHANGELOG.md) をご覧ください。
