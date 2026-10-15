@@ -206,6 +206,11 @@ In your `AppController.php`, to test if you're on a testable page and serve it, 
 like this:
 
 ```php
+/**
+ * Serve the view of the A/B test of this page, if there is one
+ *
+ * @return void
+ */
 public function beforeFilter()
 {
     $test = $this->ABTest->getTest();
@@ -224,6 +229,7 @@ true. This will return tests that aren't active yet:
 
 ```php
 $test = $this->ABTest->getTest(['debug' => true]);
+$this->set('ABTest', $test);
 ```
 
 ### Add A/B Tests
