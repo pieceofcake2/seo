@@ -79,7 +79,7 @@ class SeoHoneypotVisit extends SeoAppModel
         $cutoff = time() - SeoUtil::getConfig('timeBetweenTriggers');
 
         return $this->deleteAll([
-            "{$this->alias}.created <=" => date('Y-m-d g:i:s', $cutoff),
+            "{$this->alias}.created <=" => date('Y-m-d H:i:s', $cutoff),
         ]);
     }
 }
