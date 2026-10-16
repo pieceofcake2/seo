@@ -3,6 +3,9 @@
 App::uses('SeoAppModel', 'Seo.Model');
 App::uses('SeoUri', 'Seo.Model');
 App::uses('CakeEmail', 'Network/Email');
+App::uses('EmailTrait', 'TestSuite');
+App::uses('Router', 'Routing');
+App::uses('SeoUtil', 'Seo.Lib');
 
 if (!class_exists('MockCakeEmail')) {
     class MockCakeEmail extends CakeEmail
@@ -22,6 +25,8 @@ if (!class_exists('MockCakeEmail')) {
  */
 class SeoUriTest extends CakeTestCase
 {
+    use EmailTrait;
+
     public $fixtures = [
         'plugin.seo.seo_uri',
         'plugin.seo.seo_meta_tag',
@@ -44,6 +49,80 @@ class SeoUriTest extends CakeTestCase
     {
         unset($this->SeoUri);
         ClassRegistry::flush();
+        SeoUtil::$configs = [];
+        Router::reload();
+    }
+
+    /**
+     * Send the notifications with a real CakeEmail and enable the admin prefix routes.
+     *
+     * @return void
+     */
+    private function useRealEmailAndAdminRoutes(): void
+    {
+        $this->SeoUri->Email = new CakeEmail();
+        Configure::write('Routing.prefixes', ['admin']);
+        Router::reload();
+    }
+
+    public function testSendNotificationLinksToApproveAction(): void
+    {
+        $this->useRealEmailAndAdminRoutes();
+
+        $this->SeoUri->sendNotification(6);
+
+        $this->assertMailCount(1);
+        $this->assertMailContainsHtml('http://www.example.com/admin/seo/seo_uris/approve/6');
+        $this->assertStringNotContainsString('seo_redirects/approve', implode('', TestEmailTransport::getMessages()[0]->message()));
+    }
+
+    public function testSendNotificationLinksToApproveActionWithFullBaseUrl(): void
+    {
+        $this->useRealEmailAndAdminRoutes();
+        SeoUtil::$configs = [
+            'approverEmail' => 'approver@example.com',
+            'replyEmail' => 'noreply@example.com',
+            'parentDomain' => false,
+        ];
+        Router::fullBaseUrl('https://app.example.org');
+
+        $this->SeoUri->sendNotification(6);
+
+        $this->assertMailContainsHtml('https://app.example.org/admin/seo/seo_uris/approve/6');
+    }
+
+    public function testSaveAllSendsNotificationWithSavedRedirect(): void
+    {
+        $this->useRealEmailAndAdminRoutes();
+
+        $result = $this->SeoUri->saveAll([
+            'SeoUri' => ['uri' => '#/old-(.*)#i'],
+            'SeoRedirect' => ['redirect' => '/new/$1', 'priority' => 10, 'is_active' => 1],
+        ]);
+
+        $this->assertTrue($result);
+        $this->assertMailCount(1);
+        $this->assertMailSubjectContains('301 Redirect: #/old-(.*)#i to /new/$1 needs approval');
+        $this->assertMailContainsHtml('REDIRECT: /new/$1<br />');
+        $this->assertMailContainsHtml('PRIORITY: 10<br />');
+        $this->assertMailContainsHtml('/admin/seo/seo_uris/approve/' . $this->SeoUri->id);
+    }
+
+    public function testSaveAllDoesNotSendNotificationWhenSaveFails(): void
+    {
+        $this->useRealEmailAndAdminRoutes();
+
+        $result = $this->SeoUri->saveAll([
+            'SeoUri' => ['uri' => '#/old-(.*)#i'],
+            'SeoRedirect' => ['redirect' => '', 'priority' => 10],
+        ]);
+
+        $this->assertFalse($result);
+        $this->assertNoMailSent();
+
+        $this->SeoUri->clear();
+        $this->SeoUri->save(['SeoUri' => ['uri' => '#/other-(.*)#i']]);
+        $this->assertMailCount(1);
     }
 
     public function testUrlEncode(): void

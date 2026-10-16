@@ -39,7 +39,7 @@ class SeoRedirectsShell extends Shell
         $this->out(" cake Seo.seo_redirects add '#/(admin|moderator)/(.*)#i' '/$2?old-prefix=$1' 10");
         $this->out();
         $this->out('more about SEO Redirects');
-        $this->out('  https://github.com/webtechnick/CakePHP-Seo-Plugin/wiki/Seo-Redirects');
+        $this->out('  https://pieceofcake2.github.io/seo/redirects.html');
         $this->out();
     }
 
