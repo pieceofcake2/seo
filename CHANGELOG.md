@@ -4,6 +4,8 @@
 - Fix the approval email of a regular expression URI linking to the missing `seo_redirects/approve` action; it now links to `SeoUrisController::admin_approve()` with the URI id
 - Fix the approval email being sent before the redirect was saved, which left the redirect and priority empty
 - `SeoRedirectsShell` help links to https://pieceofcake2.github.io/seo/redirects.html instead of the upstream wiki
+- Fix `SeoHoneypotVisit` keeping old visits in the afternoon: the cutoff used the 12-hour clock, so visits up to 12 hours older than `timeBetweenTriggers` were still counted
+- **Behavior change**: `SeoHoneypotVisit::clear()`, which deleted the old visits, is renamed to `deleteExpired()`. `clear()` now resets the model like `Model::clear()` and no longer deletes rows
 
 ## 6.2.4
 - Add PHPStan analysis at level 5
