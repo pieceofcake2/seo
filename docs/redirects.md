@@ -130,8 +130,8 @@ Regular expression rules are powerful, but they can also cause redirect loops an
 surprises. Proceed with caution.
 
 A regular expression URI is saved as not approved (unless **Is Approved** is checked in the URIs
-admin screen), and its rules are not used until it is approved. The plugin sends a notification email to `approverEmail` (from
-`replyEmail`, with the `emailConfig` email configuration, see
+admin screen), and its rules are not used until it is approved. The plugin sends a notification
+email to `approverEmail` (from `replyEmail`, with the `emailConfig` email configuration, see
 [Configuration](README.md#configuration)). The email shows the URI, the redirect and the
 priority, and links to `/admin/seo/seo_uris/approve/<URI id>`, which approves the URI. The link
 starts with `parentDomain`, or with the full base URL of the application (`App.fullBaseUrl`)
