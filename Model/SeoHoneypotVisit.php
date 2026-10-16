@@ -32,7 +32,7 @@ class SeoHoneypotVisit extends SeoAppModel
             $ip = $this->getIpFromServer();
         }
 
-        $this->clear();
+        $this->deleteExpired();
 
         $this->create();
 
@@ -57,7 +57,7 @@ class SeoHoneypotVisit extends SeoAppModel
         $ip_query = is_numeric($ip) ? $ip : ip2long($ip);
 
         // Clear the database of old trigger count
-        $this->clear();
+        $this->deleteExpired();
 
         // Find the count of triggers within the (not allowed) time frame
         $count = $this->find('count', [
@@ -70,11 +70,11 @@ class SeoHoneypotVisit extends SeoAppModel
     }
 
     /**
-     * Clear the list of old visits baesd on the current time.
+     * Delete the visits older than `timeBetweenTriggers` seconds.
      *
      * @return bool success
      */
-    public function clear(): bool
+    public function deleteExpired(): bool
     {
         $cutoff = time() - SeoUtil::getConfig('timeBetweenTriggers');
 
