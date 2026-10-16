@@ -39,6 +39,59 @@ class SeoRedirect extends SeoAppModel
     ];
 
     /**
+     * Save the redirect, creating its SeoUri when needed.
+     *
+     * The approval notification of a new regular expression URI is sent after
+     * the redirect is saved, so that it contains the saved redirect.
+     *
+     * @param array|null $data
+     * @param array|bool $validate
+     * @param array $fieldList
+     * @return mixed
+     * @throws Exception
+     */
+    public function save($data = null, $validate = true, $fieldList = [])
+    {
+        $this->SeoUri->deferNotifications();
+        try {
+            $result = parent::save($data, $validate, $fieldList);
+        } catch (Exception $e) {
+            $this->SeoUri->sendDeferredNotifications(false);
+
+            throw $e;
+        }
+        $this->SeoUri->sendDeferredNotifications($result !== false);
+
+        return $result;
+    }
+
+    /**
+     * Save the redirect with its associated records (e.g. a new SeoUri).
+     *
+     * The approval notification of a new regular expression URI is sent after
+     * the redirect is saved, so that it contains the saved redirect.
+     *
+     * @param array|null $data
+     * @param array $options
+     * @return mixed
+     * @throws Exception
+     */
+    public function saveAssociated($data = null, $options = [])
+    {
+        $this->SeoUri->deferNotifications();
+        try {
+            $result = parent::saveAssociated($data, $options);
+        } catch (Exception $e) {
+            $this->SeoUri->sendDeferredNotifications(false);
+
+            throw $e;
+        }
+        $this->SeoUri->sendDeferredNotifications($result !== false);
+
+        return $result;
+    }
+
+    /**
      * Check if SEO already exists, if so, unset it and set the ID then save.
      *
      * @param array $options

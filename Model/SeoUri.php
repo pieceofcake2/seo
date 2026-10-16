@@ -2,6 +2,7 @@
 
 App::uses('SeoAppModel', 'Seo.Model');
 App::uses('CakeEmail', 'Network/Email');
+App::uses('Router', 'Routing');
 
 class SeoUri extends SeoAppModel
 {
@@ -11,6 +12,20 @@ class SeoUri extends SeoAppModel
      * @var CakeEmail|null
      */
     public $Email = null;
+
+    /**
+     * Nesting level of deferNotifications() calls
+     *
+     * @var int
+     */
+    protected $_notificationsDeferred = 0;
+
+    /**
+     * Ids of the URIs whose approval notification waits for the end of a save
+     *
+     * @var array<int|string>
+     */
+    protected $_pendingNotifications = [];
 
     /**
      * Model Name/Alias
@@ -134,10 +149,81 @@ class SeoUri extends SeoAppModel
         }
         if (isset($this->data[$this->alias]['is_approved']) && !$this->data[$this->alias]['is_approved']) {
             //Email IT about needing approval... currently me.
-            $this->sendNotification();
+            if ($this->_notificationsDeferred > 0) {
+                $this->_pendingNotifications[] = $this->id;
+            } else {
+                $this->sendNotification();
+            }
         }
 
         parent::afterSave($created, $options);
+    }
+
+    /**
+     * Save the URI with its associated records (SeoRedirect, SeoMetaTag, ...).
+     *
+     * The approval notification is sent after the associated records are saved,
+     * so that it contains the saved redirect.
+     *
+     * @param array|null $data
+     * @param array $options
+     * @return mixed
+     * @throws Exception
+     */
+    public function saveAssociated($data = null, $options = [])
+    {
+        $this->deferNotifications();
+        try {
+            $result = parent::saveAssociated($data, $options);
+        } catch (Exception $e) {
+            $this->sendDeferredNotifications(false);
+
+            throw $e;
+        }
+        $this->sendDeferredNotifications($result !== false);
+
+        return $result;
+    }
+
+    /**
+     * Hold back the approval notifications until sendDeferredNotifications() is called.
+     *
+     * Use this when saving a URI before its redirect, so that the notification
+     * contains the saved redirect. Calls can be nested.
+     *
+     * @return void
+     */
+    public function deferNotifications()
+    {
+        if ($this->_notificationsDeferred === 0) {
+            $this->_pendingNotifications = [];
+        }
+        $this->_notificationsDeferred++;
+    }
+
+    /**
+     * End a deferNotifications() call and, when it is the outermost one, send the
+     * approval notifications held back since then.
+     *
+     * @param bool $send false to discard the held back notifications (e.g. the save failed)
+     * @return void
+     */
+    public function sendDeferredNotifications($send = true)
+    {
+        if ($this->_notificationsDeferred > 0) {
+            $this->_notificationsDeferred--;
+        }
+        if ($this->_notificationsDeferred > 0) {
+            return;
+        }
+
+        $ids = array_unique($this->_pendingNotifications);
+        $this->_pendingNotifications = [];
+        if ($send) {
+            foreach ($ids as $id) {
+                $this->sendNotification($id);
+            }
+        }
     }
 
     /**
@@ -271,7 +357,10 @@ class SeoUri extends SeoAppModel
         if ($id) {
             $this->id = $id;
         }
-        $this->read();
+        $this->data = $this->find('first', [
+            'conditions' => ["{$this->alias}.{$this->primaryKey}" => $this->id],
+            'contain' => [$this->SeoRedirect->alias],
+        ]);
 
         if (!empty($this->data)) {
             if (!isset($this->Email)) {
@@ -294,10 +383,37 @@ class SeoUri extends SeoAppModel
                 PRIORITY: {$this->data[$this->SeoRedirect->alias]['priority']}<br />
                 <br />
                 Link to approve:<br />
-                EOT . SeoUtil::getConfig('parentDomain') . "/admin/seo/seo_redirects/approve/{$this->data[$this->SeoRedirect->alias]['id']}<br /><br />";
+                EOT . $this->approveUrl($this->data[$this->alias]['id']) . '<br /><br />';
 
             $this->Email->send($message);
         }
+    }
+
+    /**
+     * Full URL of the admin action that approves the URI (SeoUrisController::admin_approve()).
+     *
+     * The `parentDomain` setting, when set, is used as the scheme and host,
+     * otherwise the full base URL of the application (`App.fullBaseUrl`).
+     *
+     * @param string|int $id id of the SeoUri
+     * @return string
+     */
+    public function approveUrl($id)
+    {
+        $url = [
+            'admin' => true,
+            'plugin' => 'seo',
+            'controller' => 'seo_uris',
+            'action' => 'approve',
+            $id,
+        ];
+
+        $parentDomain = SeoUtil::getConfig('parentDomain');
+        if (!empty($parentDomain)) {
+            return rtrim($parentDomain, '/') . Router::url($url);
+        }
+
+        return Router::url($url, true);
     }
 
     /**

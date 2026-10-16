@@ -142,8 +142,11 @@ URI の末尾の `*` は、指定した部分に続く任意の文字列に一�
 正規表現の URI は未承認として保存され (URI の管理画面で **Is Approved** にチェックを入れた場合を除く)、
 承認されるまでそのルールは使われません。プラグインは `approverEmail` に通知メールを送ります
 (送信元は `replyEmail`、メール設定は `emailConfig`。[設定](README.md#configuration) をご覧ください)。
+メールには URI、リダイレクト先、優先度と、URI を承認する `/admin/seo/seo_uris/approve/<URI の id>`
+へのリンクが載ります。リンクの先頭は `parentDomain` で、`parentDomain` を設定していない場合は
+アプリケーションの完全なベース URL (`App.fullBaseUrl`) になります。
 `https://example.com/admin/seo/seo_uris` で URI を編集し、**Is Approved** にチェックを入れて
-承認してください。[シェル](#shells) で追加したリダイレクトはすぐに承認されます。
+承認することもできます。[シェル](#shells) で追加したリダイレクトはすぐに承認されます。
 
 **多対多**
 
