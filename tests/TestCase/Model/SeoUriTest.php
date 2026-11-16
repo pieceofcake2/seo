@@ -83,6 +83,8 @@ class SeoUriTest extends CakeTestCase
             'approverEmail' => 'approver@example.com',
             'replyEmail' => 'noreply@example.com',
             'parentDomain' => false,
+            // SeoUtil::getConfig() reloads the config file for a falsy value, so set it to keep these values
+            'disableNotifications' => false,
         ];
         Router::fullBaseUrl('https://app.example.org');
 
@@ -106,6 +108,41 @@ class SeoUriTest extends CakeTestCase
         $this->assertMailContainsHtml('REDIRECT: /new/$1<br />');
         $this->assertMailContainsHtml('PRIORITY: 10<br />');
         $this->assertMailContainsHtml('/admin/seo/seo_uris/approve/' . $this->SeoUri->id);
+    }
+
+    public function testSendNotificationIsSkippedWhenNotificationsAreDisabled(): void
+    {
+        $this->useRealEmailAndAdminRoutes();
+        SeoUtil::$configs = ['disableNotifications' => true];
+
+        $this->SeoUri->sendNotification(6);
+
+        $this->assertNoMailSent();
+    }
+
+    public function testSendNotificationIsSentWhenDisableNotificationsIsFalse(): void
+    {
+        $this->useRealEmailAndAdminRoutes();
+        SeoUtil::$configs = ['disableNotifications' => false];
+
+        $this->SeoUri->sendNotification(6);
+
+        $this->assertMailCount(1);
+    }
+
+    public function testSaveAllDoesNotSendNotificationWhenNotificationsAreDisabled(): void
+    {
+        $this->useRealEmailAndAdminRoutes();
+        SeoUtil::$configs = ['disableNotifications' => true];
+
+        $result = $this->SeoUri->saveAll([
+            'SeoUri' => ['uri' => '#/old-(.*)#i'],
+            'SeoRedirect' => ['redirect' => '/new/$1', 'priority' => 10, 'is_active' => 1],
+        ]);
+
+        $this->assertTrue($result);
+        $this->assertFalse((bool)$this->SeoUri->field('is_approved'));
+        $this->assertNoMailSent();
     }
 
     public function testSaveAllDoesNotSendNotificationWhenSaveFails(): void

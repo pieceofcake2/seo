@@ -354,6 +354,10 @@ class SeoUri extends SeoAppModel
      */
     public function sendNotification($id = null)
     {
+        // Short-circuit if notification sending is disabled
+        if (SeoUtil::getConfig('disableNotifications') === true) {
+            return;
+        }
         if ($id) {
             $this->id = $id;
         }

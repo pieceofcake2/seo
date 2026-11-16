@@ -137,7 +137,8 @@ priority, and links to `/admin/seo/seo_uris/approve/<URI id>`, which approves th
 starts with `parentDomain`, or with the full base URL of the application (`App.fullBaseUrl`)
 when `parentDomain` is not set. You can also approve the URI at
 `https://example.com/admin/seo/seo_uris` by editing it and checking **Is Approved**. Redirects
-added with the [shell](#shells) are approved right away.
+added with the [shell](#shells) are approved right away. Set `disableNotifications` to `true` in
+`app/Config/seo.php` to stop the notification emails; URIs still need approval.
 
 **Many to many**
 

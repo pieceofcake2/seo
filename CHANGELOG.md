@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+- Add the `disableNotifications` option to stop the approval emails
+
 ## 6.2.6
 - Fix the approval email of a regular expression URI linking to the missing `seo_redirects/approve` action; it now links to `SeoUrisController::admin_approve()` with the URI id
 - Fix the approval email being sent before the redirect was saved, which left the redirect and priority empty

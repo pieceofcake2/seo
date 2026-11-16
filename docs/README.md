@@ -68,6 +68,7 @@ Copy [`Config/seo.php.default`](../Config/seo.php.default) of the plugin to `con
 $config = [
     'Seo' => [
         'approverEmail' => 'nick@example.com',
+        'disableNotifications' => false, // true = never send the approval emails
         'replyEmail' => 'noreply@example.com',
         'emailConfig' => 'default', // config of your email, if false will use default CakeEmail()
         'parentDomain' => 'http://www.example.com',
